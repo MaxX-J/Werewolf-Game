@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐺 Loup-Garou - Jeu en ligne</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <!-- Écran d'accueil -->
+        <div id="home-screen" class="screen active">
+            <div class="container">
+                <div class="logo-container">
+                    <div class="moon"></div>
+                    <h1 class="title">🐺 Loup-Garou</h1>
+                    <p class="subtitle">Le village dort... mais pas les loups</p>
+                </div>
+                
+                <div class="form-container glass">
+                    <div class="input-group">
+                        <label for="playerName">Votre nom</label>
+                        <input type="text" id="playerName" placeholder="Entrez votre pseudo" maxlength="15">
+                    </div>
+                    
+                    <div class="buttons-row">
+                        <button id="createGameBtn" class="btn btn-primary">
+                            <span class="btn-icon">✨</span>
+                            Créer une partie
+                        </button>
+                    </div>
+                    
+                    <div class="divider">
+                        <span>ou rejoindre</span>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="gameCode">Code de la partie</label>
+                        <input type="text" id="gameCode" placeholder="XXXX" maxlength="4" style="text-transform: uppercase">
+                    </div>
+                    
+                    <button id="joinGameBtn" class="btn btn-secondary">
+                        <span class="btn-icon">🚪</span>
+                        Rejoindre
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Écran Lobby -->
+        <div id="lobby-screen" class="screen">
+            <div class="container">
+                <div class="lobby-header glass">
+                    <h2>Salle d'attente</h2>
+                    <div class="game-code-display">
+                        <span>Code:</span>
+                        <span id="displayGameCode" class="code">----</span>
+                        <button id="copyCodeBtn" class="btn-icon-only" title="Copier">📋</button>
+                    </div>
+                </div>
+                
+                <div class="players-grid" id="playersGrid">
+                    <!-- Les joueurs seront ajoutés ici -->
+                </div>
+                
+                <div class="lobby-footer">
+                    <p class="player-count"><span id="playerCount">0</span>/12 joueurs</p>
+                    <p class="min-players">Minimum 5 joueurs pour commencer</p>
+                    
+                    <div class="lobby-actions">
+                        <button id="leaveGameBtn" class="btn btn-danger">
+                            Quitter
+                        </button>
+                        <button id="startGameBtn" class="btn btn-primary" disabled>
+                            <span class="btn-icon">🎮</span>
+                            Lancer la partie
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Écran de jeu -->
+        <div id="game-screen" class="screen">
+            <div class="game-container">
+                <!-- Header avec infos -->
+                <div class="game-header glass">
+                    <div class="round-info">
+                        <span id="gamePhase">🌙 Nuit</span>
+                        <span id="roundNumber">Tour 1</span>
+                    </div>
+                    <div class="role-badge" id="roleBadge">
+                        <span class="role-emoji">👤</span>
+                        <span class="role-name">Villageois</span>
+                    </div>
+                </div>
+
+                <!-- Zone principale -->
+                <div class="game-main">
+                    <!-- Liste des joueurs -->
+                    <div class="players-panel glass">
+                        <h3>Joueurs</h3>
+                        <div class="game-players-list" id="gamePlayersList">
+                            <!-- Joueurs du jeu -->
+                        </div>
+                    </div>
+
+                    <!-- Zone d'action centrale -->
+                    <div class="action-panel glass" id="actionPanel">
+                        <div class="waiting-message" id="waitingMessage">
+                            <div class="spinner"></div>
+                            <p>En attente des autres joueurs...</p>
+                        </div>
+                        
+                        <!-- Actions spécifiques selon le rôle/phase -->
+                        <div class="action-content" id="actionContent" style="display: none;">
+                            <h3 id="actionTitle">Action</h3>
+                            <p id="actionDescription">Description de l'action</p>
+                            <div class="action-targets" id="actionTargets">
+                                <!-- Boutons de cible -->
+                            </div>
+                            <div class="action-buttons" id="actionButtons">
+                                <!-- Boutons d'action -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chat -->
+                    <div class="chat-panel glass" id="chatPanel">
+                        <h3>💬 Discussion</h3>
+                        <div class="chat-messages" id="chatMessages">
+                            <div class="system-message">Le jour se lève sur le village...</div>
+                        </div>
+                        <div class="chat-input-container">
+                            <input type="text" id="chatInput" placeholder="Votre message..." maxlength="200" disabled>
+                            <button id="sendChatBtn" class="btn btn-small" disabled>Envoyer</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Écran de fin -->
+        <div id="end-screen" class="screen">
+            <div class="container">
+                <div class="end-content glass">
+                    <div class="winner-announcement" id="winnerAnnouncement">
+                        <h2 id="winnerTitle">Victoire !</h2>
+                        <p id="winnerSubtitle">Les loups-garous ont dévoré le village</p>
+                    </div>
+                    
+                    <div class="final-roles">
+                        <h3>Révélation des rôles</h3>
+                        <div class="roles-grid" id="rolesGrid">
+                            <!-- Tous les rôles révélés -->
+                        </div>
+                    </div>
+                    
+                    <button id="newGameBtn" class="btn btn-primary">
+                        <span class="btn-icon">🔄</span>
+                        Nouvelle partie
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notifications -->
+        <div id="notifications"></div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
