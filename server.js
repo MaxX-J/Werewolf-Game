@@ -284,25 +284,16 @@ io.on('connection', (socket) => {
                     });
                 }
             }
+        } else if (game.state === 'day' || game.state === 'ended') {
+            // Plus de voyante ni de sorcière en vie : la nuit s'est terminée directement
+            handleNightEnd(gameCode, game);
         }
     }
 
     function handleNightEnd(gameCode, game) {
-        const result = gameManager.endNight ?
-            { deaths: [], winner: game.winner } :
-            (() => {
-                // La logique de fin de nuit est déjà dans witchAction/witchSkip
-                const deaths = [];
-                // Récupérer les morts de cette nuit depuis le game state
-                return { deaths, winner: game.winner };
-            })();
-
-        // Le jour commence
+        // Le jour commence : on annonce les morts de cette nuit (calculés par endNight)
         io.to(gameCode).emit('nightEnd', {
-            deaths: Array.from(game.deadPlayers).slice(-2).map(id => {
-                const p = game.players.get(id);
-                return p ? { id, name: p.name, role: p.role } : null;
-            }).filter(Boolean)
+            deaths: game.lastNightDeaths || []
         });
 
         if (game.winner) {

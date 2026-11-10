@@ -197,7 +197,7 @@ class GameManager {
                 }
             }
 
-            return { success: true, phaseComplete: true, game };
+            return { success: true, phaseComplete: true, votes: wolves.length, total: wolves.length, game };
         }
 
         return { success: true, phaseComplete: false, votes: game.votes.size, total: wolves.length };
@@ -292,6 +292,9 @@ class GameManager {
             }
         }
 
+        // Morts de cette nuit, annoncés au début du jour
+        game.lastNightDeaths = deaths.map(d => ({ id: d.socketId, name: d.player.name, role: d.player.role }));
+
         // Reset pour la nuit
         game.nightVictim = null;
         game.witchSaved = false;
@@ -341,7 +344,8 @@ class GameManager {
 
         // Vérifier si tout le monde a voté
         if (game.votes.size >= aliveCount) {
-            return this.resolveDayVote(game);
+            // tout le monde a voté : on renvoie aussi le compte, pour la notification « Vote enregistré (n/n) »
+            return { ...this.resolveDayVote(game), votes: aliveCount, total: aliveCount };
         }
 
         return { success: true, phaseComplete: false, votes: game.votes.size, total: aliveCount };
